@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0a16">
+<title>ファッション史 - Fashion History</title>
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoi44OV44Kh44OD44K344On44Oz5Y+yIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwYTBhMTYiLCJ0aGVtZV9jb2xvciI6IiNlODQzOTMiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsInN0YXJ0X3VybCI6Ii4ifQ==">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0a0a16;--bg2:rgba(17,17,40,.7);--bg3:rgba(26,26,62,.6);--bg4:rgba(34,34,85,.5);
+--glass:rgba(255,255,255,.04);--glass-border:rgba(255,255,255,.08);--glass-hover:rgba(255,255,255,.08);
+--accent:#e84393;--accent2:#fd79a8;--accent3:#fab1d0;
+--gold:#f9ca24;--silver:#dfe6e9;--text:#eee;--text2:#aaa;--text3:#777;
+--radius:16px;--shadow:0 8px 32px rgba(0,0,0,.4);
+--blur:blur(16px);
+}
+html,body{background:var(--bg);color:var(--text);font-family:'Segoe UI','Hiragino Sans',sans-serif;overflow-x:hidden;min-height:100vh;min-height:100dvh;-webkit-tap-highlight-color:transparent}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(232,67,147,.06) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(249,202,36,.04) 0%,transparent 50%);pointer-events:none;z-index:0}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:4px}
+
+/* -- Header -- */
+.app-header{position:sticky;top:0;z-index:100;background:rgba(10,10,22,.8);border-bottom:1px solid var(--glass-border);padding:12px 16px;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.app-title{font-size:1.3rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.5px}
+.app-subtitle{font-size:.7rem;color:var(--text3);margin-top:2px;letter-spacing:1px}
+
+/* -- Navigation -- */
+.nav-bar{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;background:rgba(10,10,22,.6);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);position:sticky;top:52px;z-index:99;-ms-overflow-style:none;scrollbar-width:none}
+.nav-bar::-webkit-scrollbar{display:none}
+.nav-btn{flex-shrink:0;padding:8px 16px;border-radius:20px;border:1px solid var(--glass-border);background:var(--glass);color:var(--text2);font-size:.78rem;cursor:pointer;transition:all .25s;white-space:nowrap;font-weight:600;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.nav-btn.active{background:linear-gradient(135deg,var(--accent),#d63384);color:#fff;border-color:var(--accent);box-shadow:0 2px 16px rgba(232,67,147,.35)}
+.nav-btn:hover:not(.active){border-color:rgba(232,67,147,.4);background:var(--glass-hover)}
+
+/* -- Section common -- */
+.section{display:none;padding:16px;padding-bottom:120px;animation:fadeUp .35s ease;position:relative;z-index:1}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.section-title{font-size:1.15rem;font-weight:700;margin-bottom:16px;padding-left:12px;border-left:3px solid var(--accent);color:var(--accent2)}
+
+/* -- Timeline -- */
+.timeline-scroll{overflow-x:auto;padding-bottom:16px;-ms-overflow-style:none;scrollbar-width:none}
+.timeline-scroll::-webkit-scrollbar{display:none}
+.timeline-track{display:flex;gap:16px;padding:8px 4px;min-width:max-content;position:relative}
+.timeline-track::before{content:'';position:absolute;top:50%;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),var(--gold),var(--accent),transparent);transform:translateY(-50%);z-index:0}
+.era-card{position:relative;z-index:1;width:280px;flex-shrink:0;background:rgba(17,17,40,.6);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--glass-border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:all .3s}
+.era-card:hover,.era-card.expanded{border-color:rgba(232,67,147,.4);box-shadow:0 0 30px rgba(232,67,147,.15);transform:translateY(-4px)}
+.era-card.expanded{background:rgba(17,17,40,.85)}
+.era-years{font-size:.7rem;color:var(--accent);font-weight:700;letter-spacing:2px;margin-bottom:6px}
+.era-title{font-size:1rem;font-weight:700;margin-bottom:8px;line-height:1.4}
+.era-expand-hint{font-size:.65rem;color:var(--text3);margin-top:8px;transition:opacity .2s}
+.era-card.expanded .era-expand-hint{opacity:0;height:0;margin:0;overflow:hidden}
+.era-desc{font-size:.8rem;color:var(--text2);line-height:1.6}
+.era-designers{margin-top:10px;display:flex;flex-wrap:wrap;gap:4px}
+.era-tag{font-size:.65rem;padding:3px 8px;border-radius:10px;background:rgba(232,67,147,.12);color:var(--accent2);border:1px solid rgba(232,67,147,.15)}
+.era-detail{display:none;margin-top:14px;padding-top:14px;border-top:1px solid rgba(232,67,147,.12);font-size:.8rem;color:var(--text2);line-height:1.7}
+.era-card.expanded .era-detail{display:block;animation:fadeUp .3s ease}
+
+/* -- Brand Cards -- */
+.brand-search-wrap{margin-bottom:12px}
+.brand-search{width:100%;padding:12px 16px;border-radius:var(--radius);border:1px solid var(--glass-border);background:rgba(17,17,40,.5);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);color:var(--text);font-size:.85rem;outline:none;transition:border-color .25s}
+.brand-search:focus{border-color:var(--accent)}
+.brand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.brand-card{background:rgba(17,17,40,.5);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--glass-border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.brand-card:hover{border-color:rgba(232,67,147,.4);transform:translateY(-3px);box-shadow:var(--shadow)}
+.brand-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.brand-name{font-size:.9rem;font-weight:700;margin-bottom:4px}
+.brand-year{font-size:.7rem;color:var(--accent);font-weight:600}
+.brand-founder{font-size:.72rem;color:var(--text3);margin-top:4px}
+.brand-country{font-size:.65rem;color:var(--text3);margin-top:2px}
+
+/* -- Brand Detail Modal -- */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.modal-overlay.show{display:flex}
+.modal-content{background:rgba(17,17,40,.9);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(232,67,147,.2);border-radius:var(--radius);max-width:500px;width:100%;max-height:85vh;overflow-y:auto;padding:24px;position:relative;animation:fadeUp .3s ease}
+.modal-close{position:absolute;top:12px;right:16px;background:none;border:none;color:var(--text3);font-size:1.4rem;cursor:pointer;z-index:10;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{color:var(--accent);background:rgba(232,67,147,.1)}
+.modal-brand-name{font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;padding-right:40px}
+.modal-brand-sub{font-size:.8rem;color:var(--text3);margin-bottom:16px}
+.modal-section{margin-bottom:16px}
+.modal-section h4{font-size:.82rem;color:var(--accent2);margin-bottom:8px;font-weight:700}
+.modal-section p,.modal-section li{font-size:.8rem;color:var(--text2);line-height:1.7}
+.modal-section ul{padding-left:18px}
+.modal-section li{margin-bottom:4px}
+.modal-tag{display:inline-block;font-size:.65rem;padding:3px 8px;border-radius:10px;background:rgba(232,67,147,.1);color:var(--accent2);margin:2px 4px 2px 0;border:1px solid rgba(232,67,147,.12)}
+.bookmark-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;border:1px solid rgba(232,67,147,.25);background:var(--glass);color:var(--accent2);font-size:.78rem;cursor:pointer;transition:all .25s;margin-top:8px}
+.bookmark-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.bookmark-btn:hover:not(.active){border-color:var(--accent);background:rgba(232,67,147,.1)}
+
+/* -- Collections -- */
+.collection-list{display:flex;flex-direction:column;gap:12px}
+.collection-card{background:rgba(17,17,40,.5);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--glass-border);border-radius:var(--radius);padding:18px;transition:all .3s;cursor:pointer}
+.collection-card:hover{border-color:rgba(232,67,147,.4);box-shadow:0 0 20px rgba(232,67,147,.1)}
+.collection-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:8px}
+.collection-name{font-size:.95rem;font-weight:700;flex:1}
+.collection-year{font-size:.72rem;color:var(--gold);font-weight:700;background:rgba(249,202,36,.08);padding:3px 10px;border-radius:10px;flex-shrink:0}
+.collection-designer{font-size:.78rem;color:var(--accent2);margin-bottom:6px}
+.collection-desc{font-size:.78rem;color:var(--text2);line-height:1.6}
+.collection-impact{margin-top:10px;font-size:.72rem;color:var(--text3);font-style:italic;padding-left:10px;border-left:2px solid rgba(232,67,147,.3)}
+
+/* -- Quiz -- */
+.quiz-area{max-width:500px;margin:0 auto}
+.quiz-score{text-align:center;margin-bottom:20px;padding:16px;background:rgba(17,17,40,.5);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-radius:var(--radius);border:1px solid var(--glass-border)}
+.quiz-score-num{font-size:2rem;font-weight:800;color:var(--accent)}
+.quiz-score-label{font-size:.75rem;color:var(--text3)}
+.quiz-score-pct{font-size:.8rem;color:var(--gold);margin-top:4px;font-weight:600}
+.quiz-reset-btn{margin-top:8px;padding:6px 14px;border-radius:12px;border:1px solid var(--glass-border);background:var(--glass);color:var(--text3);font-size:.7rem;cursor:pointer;transition:all .25s}
+.quiz-reset-btn:hover{border-color:var(--accent);color:var(--accent2)}
+.quiz-card{background:rgba(17,17,40,.5);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--glass-border);border-radius:var(--radius);padding:24px;margin-bottom:16px}
+.quiz-question{font-size:1rem;font-weight:700;margin-bottom:16px;line-height:1.5}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{padding:12px 16px;border-radius:12px;border:1px solid var(--glass-border);background:rgba(10,10,22,.5);color:var(--text);font-size:.85rem;cursor:pointer;transition:all .25s;text-align:left}
+.quiz-opt:hover:not(.disabled){border-color:rgba(232,67,147,.4);background:rgba(232,67,147,.06)}
+.quiz-opt.correct{border-color:#00b894;background:rgba(0,184,148,.12);color:#55efc4}
+.quiz-opt.wrong{border-color:#d63031;background:rgba(214,48,49,.12);color:#ff7675}
+.quiz-opt.disabled{pointer-events:none}
+.quiz-explanation{display:none;margin-top:12px;padding:12px;border-radius:12px;background:rgba(249,202,36,.06);border:1px solid rgba(249,202,36,.12);font-size:.78rem;color:var(--text2);line-height:1.6}
+.quiz-explanation.show{display:block;animation:fadeUp .3s ease}
+.quiz-next{display:none;margin-top:16px;padding:12px 24px;border-radius:20px;border:none;background:linear-gradient(135deg,var(--accent),#d63384);color:#fff;font-size:.85rem;font-weight:700;cursor:pointer;width:100%;transition:transform .2s}
+.quiz-next:hover{transform:scale(1.02)}
+.quiz-next.show{display:block}
+.quiz-category-btns{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;justify-content:center}
+.quiz-cat-btn{padding:8px 14px;border-radius:16px;border:1px solid var(--glass-border);background:var(--glass);color:var(--text2);font-size:.75rem;cursor:pointer;transition:all .25s}
+.quiz-cat-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.quiz-cat-btn:hover:not(.active){border-color:rgba(232,67,147,.4)}
+
+/* -- Glossary -- */
+.glossary-search{width:100%;padding:12px 16px;border-radius:var(--radius);border:1px solid var(--glass-border);background:rgba(17,17,40,.5);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);color:var(--text);font-size:.85rem;margin-bottom:16px;outline:none;transition:border-color .25s}
+.glossary-search:focus{border-color:var(--accent)}
+.glossary-count{font-size:.72rem;color:var(--text3);margin-bottom:12px;text-align:right}
+.glossary-list{display:flex;flex-direction:column;gap:8px}
+.glossary-item{background:rgba(17,17,40,.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--glass-border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .25s}
+.glossary-item:hover{border-color:rgba(232,67,147,.3)}
+.glossary-item.open{border-color:rgba(232,67,147,.3);background:rgba(17,17,40,.6)}
+.glossary-term{font-size:.9rem;font-weight:700;color:var(--accent2);margin-bottom:2px}
+.glossary-term-en{font-size:.72rem;color:var(--text3);margin-bottom:6px}
+.glossary-def{font-size:.78rem;color:var(--text2);line-height:1.6;display:none}
+.glossary-item.open .glossary-def{display:block;animation:fadeUp .25s ease}
+
+/* -- Connections -- */
+.connections-container{position:relative}
+.connection-group{margin-bottom:16px;background:rgba(17,17,40,.5);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--glass-border);border-radius:var(--radius);padding:16px;transition:border-color .25s}
+.connection-group:hover{border-color:rgba(232,67,147,.3)}
+.connection-title{font-size:.9rem;font-weight:700;color:var(--accent2);margin-bottom:10px}
+.connection-flow{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.connection-node{padding:6px 12px;border-radius:10px;background:rgba(232,67,147,.08);border:1px solid rgba(232,67,147,.15);font-size:.75rem;color:var(--text);font-weight:600;transition:all .2s}
+.connection-node:hover{background:rgba(232,67,147,.15);border-color:rgba(232,67,147,.3)}
+.connection-arrow{color:var(--accent);font-size:.85rem}
+.connection-desc{font-size:.75rem;color:var(--text3);margin-top:10px;line-height:1.6;padding-top:10px;border-top:1px solid rgba(255,255,255,.04)}
+
+/* -- Bookmarks -- */
+.bookmark-list{display:flex;flex-direction:column;gap:10px}
+.bookmark-item{display:flex;align-items:center;justify-content:space-between;background:rgba(17,17,40,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--glass-border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .25s}
+.bookmark-item:hover{border-color:rgba(232,67,147,.3)}
+.bookmark-info{flex:1}
+.bookmark-type{font-size:.65rem;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.bookmark-name{font-size:.85rem;font-weight:600;margin-top:2px}
+.bookmark-remove{background:none;border:none;color:var(--text3);font-size:1.1rem;cursor:pointer;padding:4px 8px;border-radius:50%;transition:all .2s;width:32px;height:32px;display:flex;align-items:center;justify-content:center}
+.bookmark-remove:hover{color:#d63031;background:rgba(214,48,49,.1)}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text3);font-size:.85rem}
+.empty-state-icon{font-size:2.5rem;margin-bottom:12px;opacity:.4}
+
+/* -- Filter/sort bar -- */
+.filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filter-select{padding:8px 12px;border-radius:12px;border:1px solid var(--glass-border);background:rgba(17,17,40,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--text);font-size:.78rem;outline:none;cursor:pointer;transition:border-color .25s}
+.filter-select:focus{border-color:var(--accent)}
+.filter-select option{background:#111128;color:var(--text)}
+
+/* -- Stats bar -- */
+.stats-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.stat-chip{padding:6px 12px;border-radius:10px;background:var(--glass);border:1px solid var(--glass-border);font-size:.7rem;color:var(--text2)}
+.stat-chip strong{color:var(--accent2);margin-right:4px}
+
+/* -- Back to top -- */
+.back-to-top{position:fixed;bottom:24px;right:24px;width:44px;height:44px;border-radius:50%;background:rgba(232,67,147,.8);border:1px solid rgba(232,67,147,.4);color:#fff;font-size:1.2rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:150;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all .3s;box-shadow:0 4px 16px rgba(232,67,147,.3)}
+.back-to-top.show{display:flex}
+.back-to-top:hover{transform:scale(1.1);background:var(--accent)}
+
+/* -- Responsive -- */
+@media(max-width:480px){
+  .brand-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .era-card{width:250px;padding:16px}
+  .modal-content{padding:18px;margin:8px}
+  .filter-bar{gap:6px}
+  .filter-select{font-size:.75rem;padding:7px 10px}
+  .stats-bar{gap:6px}
+  .stat-chip{font-size:.65rem;padding:5px 10px}
+  .back-to-top{bottom:16px;right:16px;width:40px;height:40px}
+}
+@media(max-width:360px){
+  .brand-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="app-title">ファッション史</div>
+  <div class="app-subtitle">FASHION HISTORY ENCYCLOPEDIA</div>
+</header>
+
+<nav class="nav-bar" id="navBar">
+  <button class="nav-btn active" data-section="timeline">タイムライン</button>
+  <button class="nav-btn" data-section="brands">ブランド</button>
+  <button class="nav-btn" data-section="collections">コレクション</button>
+  <button class="nav-btn" data-section="quiz">クイズ</button>
+  <button class="nav-btn" data-section="glossary">用語集</button>
+  <button class="nav-btn" data-section="connections">系譜</button>
+  <button class="nav-btn" data-section="bookmarks">ブックマーク</button>
+</nav>
+
+<main>
+  <!-- Timeline -->
+  <div class="section active" id="sec-timeline">
+    <h2 class="section-title">ファッション史タイムライン</h2>
+    <div class="stats-bar">
+      <div class="stat-chip"><strong>10</strong>時代</div>
+      <div class="stat-chip"><strong>170+</strong>年の歴史</div>
+    </div>
+    <div class="timeline-scroll">
+      <div class="timeline-track" id="timelineTrack"></div>
+    </div>
+  </div>
+
+  <!-- Brands -->
+  <div class="section" id="sec-brands">
+    <h2 class="section-title">ブランドプロフィール</h2>
+    <div class="brand-search-wrap">
+      <input class="brand-search" id="brandSearch" placeholder="ブランド名・創設者で検索...">
+    </div>
+    <div class="filter-bar">
+      <select class="filter-select" id="brandSort">
+        <option value="alpha">A-Z</option>
+        <option value="year">設立年順</option>
+        <option value="country">国別</option>
+      </select>
+      <select class="filter-select" id="brandCountry">
+        <option value="all">全ての国</option>
+        <option value="France">フランス</option>
+        <option value="Italy">イタリア</option>
+        <option value="UK">イギリス</option>
+        <option value="Japan">日本</option>
+        <option value="USA">アメリカ</option>
+      </select>
+      <div class="stat-chip" id="brandCount"><strong>0</strong>ブランド</div>
+    </div>
+    <div class="brand-grid" id="brandGrid"></div>
+  </div>
+
+  <!-- Collections -->
+  <div class="section" id="sec-collections">
+    <h2 class="section-title">伝説のコレクション</h2>
+    <div class="filter-bar">
+      <select class="filter-select" id="collectionEra">
+        <option value="all">全ての年代</option>
+        <option value="1940">1940s</option>
+        <option value="1950">1950s</option>
+        <option value="1960">1960s</option>
+        <option value="1970">1970s</option>
+        <option value="1980">1980s</option>
+        <option value="1990">1990s</option>
+        <option value="2000">2000s</option>
+        <option value="2010">2010s</option>
+        <option value="2020">2020s</option>
+      </select>
+      <div class="stat-chip" id="collectionCount"><strong>0</strong>コレクション</div>
+    </div>
+    <div class="collection-list" id="collectionList"></div>
+  </div>
+
+  <!-- Quiz -->
+  <div class="section" id="sec-quiz">
+    <h2 class="section-title">ファッションクイズ</h2>
+    <div class="quiz-area" id="quizArea">
+      <div class="quiz-score">
+        <div class="quiz-score-num" id="quizScoreNum">0</div>
+        <div class="quiz-score-label">正解数 / <span id="quizTotal">0</span> 問</div>
+        <div class="quiz-score-pct" id="quizPct"></div>
+        <button class="quiz-reset-btn" id="quizReset">スコアリセット</button>
+      </div>
+      <div class="quiz-category-btns" id="quizCats"></div>
+      <div class="quiz-card" id="quizCard">
+        <div class="quiz-question" id="quizQuestion">カテゴリを選んでスタート</div>
+        <div class="quiz-options" id="quizOptions"></div>
+        <div class="quiz-explanation" id="quizExplanation"></div>
+        <button class="quiz-next" id="quizNext">次の問題</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Glossary -->
+  <div class="section" id="sec-glossary">
+    <h2 class="section-title">ファッション用語集</h2>
+    <input class="glossary-search" id="glossarySearch" placeholder="用語を検索...">
+    <div class="glossary-count" id="glossaryCount"></div>
+    <div class="glossary-list" id="glossaryList"></div>
+  </div>
+
+  <!-- Connections -->
+  <div class="section" id="sec-connections">
+    <h2 class="section-title">デザイナー系譜・影響関係</h2>
+    <div class="connections-container" id="connectionsContainer"></div>
+  </div>
+
+  <!-- Bookmarks -->
+  <div class="section" id="sec-bookmarks">
+    <h2 class="section-title">ブックマーク</h2>
+    <div class="bookmark-list" id="bookmarkList"></div>
+  </div>
+</main>
+
+<!-- Brand Detail Modal -->
+<div class="modal-overlay" id="brandModal">
+  <div class="modal-content" id="brandModalContent"></div>
+</div>
+
+<!-- Back to top -->
+<button class="back-to-top" id="backToTop" aria-label="トップに戻る">&uarr;</button>
+
+<script>
+/* ================================================================
+   DATA
+   ================================================================ */
+
+const ERAS = [
+  {
+    id:"era1",period:"1850-1900",title:"オートクチュール誕生",titleEn:"Birth of Haute Couture",
+    desc:"Charles Frederick Worthがパリに初のオートクチュールメゾンを設立。高級仕立ての概念が確立され、ファッションが「芸術」として認められる時代の幕開け。",
+    designers:["Charles Frederick Worth","Jacques Doucet","Jeanne Paquin"],
+    detail:"1858年、英国人のCharles Frederick Worthがパリのリュ・ド・ラ・ペに店を構え、デザイナーが顧客に提案するという革命的なビジネスモデルを確立。それまでの仕立て屋は顧客の注文通りに作るだけだったが、Worthは自らのビジョンでコレクションを発表した。クリノリンやバッスルスタイルが流行し、ナポレオン3世の皇后ウジェニーがWorthの顧客となったことで、パリは世界のファッションの中心地としての地位を確立した。1868年にはシャンブル・サンディカル（パリ・オートクチュール組合）が設立された。"
+  },
+  {
+    id:"era2",period:"1900-1920s",title:"アールヌーヴォー / アールデコ",titleEn:"Art Nouveau & Art Deco",
+    desc:"Paul Poiretがコルセットからの解放を宣言。第一次大戦後、女性の社会進出とともにフラッパースタイルが登場。",
+    designers:["Paul Poiret","Madeleine Vionnet","Jeanne Lanvin","Mariano Fortuny"],
+    detail:"Paul Poiretは1906年頃からコルセットを廃止し、ハイウエストの「ディレクトワール」ラインを提案。東洋的な要素を取り入れたオリエンタリズムが流行した。Madeleine Vionnetはバイアスカットを発明し、生地が体に沿うドレーピングの技法を確立。第一次世界大戦は女性のファッションに革命をもたらし、実用的で動きやすい服が求められるようになった。1920年代にはフラッパードレスが登場し、膝丈のスカート、ボブヘア、ジャズエイジの自由な精神がファッションに反映された。"
+  },
+  {
+    id:"era3",period:"1920-1940s",title:"モダニズムの確立",titleEn:"Modernism in Fashion",
+    desc:"Coco Chanelがモダンウーマンの装いを定義。Schiaparelliはシュルレアリスムをファッションに導入。リトルブラックドレスが永遠の定番に。",
+    designers:["Coco Chanel","Elsa Schiaparelli","Mainbocher","Madame Gres"],
+    detail:"Coco Chanelは1926年にVogue誌で「リトルブラックドレス」を発表し、それまで喪服の色だった黒をエレガンスの象徴に変えた。ジャージー素材の使用、ツイードスーツ、コスチュームジュエリーなど、Chanelの革新は現代ファッションの基礎を作った。一方Elsa Schiaparelliはサルバドール・ダリとのコラボレーションでロブスタードレスやシューハットを生み出し、ファッションとアートの融合を実現。1930年代のハリウッド映画もファッションに大きな影響を与え、グラマラスなスタイルが広まった。"
+  },
+  {
+    id:"era4",period:"1947-1960s",title:"ニュールック革命",titleEn:"The New Look Revolution",
+    desc:"Christian Diorの「ニュールック」が戦後のファッションを一変。Balenciaga、Givenchyが新しいエレガンスを追求。",
+    designers:["Christian Dior","Cristobal Balenciaga","Hubert de Givenchy","Pierre Balmain"],
+    detail:"1947年2月12日、Christian Diorが発表した「Corolle」ライン（後にニュールックと呼ばれる）は、戦時中の質素な服装からの劇的な転換だった。なだらかな肩、細く絞ったウエスト、ふんわりと広がるロングスカートが特徴で、女性らしさの復権を象徴した。Balenciagaは「クチュリエの中のクチュリエ」と呼ばれ、サックドレスやバルーンスカートなど建築的なシルエットを追求。Givenchyはオードリー・ヘプバーンとのパートナーシップで知られ、映画『ティファニーで朝食を』の衣装は永遠のアイコンとなった。"
+  },
+  {
+    id:"era5",period:"1960s",title:"ユースカルチャー革命",titleEn:"Youth Culture Revolution",
+    desc:"Mary Quantがミニスカートを大衆化。Andre Courregesが宇宙時代のファッションを提案。若者が主役の時代。",
+    designers:["Mary Quant","Andre Courreges","Pierre Cardin","Paco Rabanne"],
+    detail:"1960年代、ファッションの主導権はオートクチュールのメゾンから、ストリートの若者たちへと移った。Mary Quantはロンドンのキングスロードでミニスカートを広め、若い女性の解放の象徴となった。Andre Courregesは1964年の「Moon Girl」コレクションで白いミニドレスとゴーゴーブーツを発表。Pierre Cardinは宇宙時代のジオメトリックなデザインで未来的なファッションを提案した。ツイッギーがモデルとして登場し、細身でボーイッシュな体型がファッションの理想となった。"
+  },
+  {
+    id:"era6",period:"1970s",title:"多様化とカウンターカルチャー",titleEn:"Diversification & Counterculture",
+    desc:"YSLがプレタポルテを確立。パンクファッションがロンドンから世界へ。Vivienne Westwoodが反骨のスタイルを創造。",
+    designers:["Yves Saint Laurent","Halston","Vivienne Westwood","Kenzo Takada"],
+    detail:"Yves Saint Laurentは1966年にプレタポルテライン「Rive Gauche」を発表し、高級ファッションの民主化を推進。ルスモーキング（女性用タキシード）やサファリジャケットなど、メンズウェアからの引用で女性の力強さを表現した。Halstonはアメリカの70年代を象徴するデザイナーで、ジャージードレスやウルトラスエードを愛用。1976年、Vivienne WestwoodとMalcolm McLarenがキングスロードの「SEX」からパンクファッションを発信。安全ピン、破れた服、タータンチェックが反体制の象徴となった。Kenzo Takadaは日本人デザイナーとしてパリで成功し、カラフルなプリントと文化のミックスで新風を吹き込んだ。"
+  },
+  {
+    id:"era7",period:"1980s",title:"パワードレッシング",titleEn:"Power Dressing Era",
+    desc:"Giorgio Armaniがパワースーツを定義。Versaceが華やかさの極致を追求。肩パッドとゴールドの時代。",
+    designers:["Giorgio Armani","Gianni Versace","Thierry Mugler","Claude Montana","Azzedine Alaia"],
+    detail:"1980年代は「多ければ多いほどいい」の時代。Giorgio Armaniは映画『アメリカン・ジゴロ』（1980年）でのリチャード・ギアの衣装で一躍有名になり、柔らかく構築的なパワースーツで働く女性のための服を提案。Gianni Versaceはメドゥーサのロゴと共に、大胆なプリント、鮮やかな色使い、セクシーなシルエットで80年代の華やかさを体現した。Thierry Muglerは彫刻的なシルエットと劇的なショーで知られ、ファッションをスペクタクルに変えた。日本からは川久保玲と山本耀司が1981年のパリコレで衝撃のデビューを果たし、西洋ファッションの常識を覆した。"
+  },
+  {
+    id:"era8",period:"1990s",title:"ミニマリズムとデコンストラクション",titleEn:"Minimalism & Deconstruction",
+    desc:"Martin Margielaが既成概念を破壊。Helmut Langがミニマルを極める。日本のアヴァンギャルドが世界を席巻。",
+    designers:["Martin Margiela","Helmut Lang","川久保玲","山本耀司","Ann Demeulemeester","Jil Sander"],
+    detail:"1990年代はファッションの知性化の時代。Martin Margielaは1988年のデビューコレクションで解体と再構築の美学を提示し、ラベルを見せない匿名性、リサイクル素材の使用、ファッションシステムそのものへの問いかけを行った。Helmut Langはミニマリズムの旗手として、クリーンなラインと先進的な素材使いで90年代を定義。川久保玲のComme des Garconsは「Lumps and Bumps」（1997年）で身体の概念を覆し、山本耀司は詩的な黒の美学を追求し続けた。アントワープ・シックス（Ann Demeulemeester、Dries Van Noten等）もこの時代に台頭。グランジの影響でMarc JacobsがPerryEllisの1993年コレクションでグランジを発表し解雇された事件も象徴的。"
+  },
+  {
+    id:"era9",period:"2000s",title:"グローバル化とセレブリティ",titleEn:"Globalization & Celebrity Culture",
+    desc:"Tom Fordがセクシーなラグジュアリーを再定義。Alexander McQueenが天才的なショーマンシップを発揮。ファストファッションが台頭。",
+    designers:["Tom Ford","Alexander McQueen","Nicolas Ghesquiere","Phoebe Philo","Hedi Slimane"],
+    detail:"Tom Fordは1994年にGucciのクリエイティブディレクターに就任し、瀕死のブランドをセクシーでグラマラスな帝国に変貌させた。Alexander McQueenは「Highland Rape」（1995年）や「Plato's Atlantis」（2010年）など、衝撃的で美しいショーで「ファッションの暴君」と呼ばれた。Nicolas GhesquiereはBalenciagaで未来的なシルエットを追求。Phoebe PhiloはCelineで知的な女性のためのミニマルなデザインを確立。2000年代にはZara、H&Mなどのファストファッションが急成長し、トレンドの民主化と同時に環境問題も浮上。インターネットとSNSの普及でファッション情報の流通が劇的に変化した。"
+  },
+  {
+    id:"era10",period:"2010s-現在",title:"サステナビリティとデジタル革命",titleEn:"Sustainability & Digital Revolution",
+    desc:"Virgil Ablohがストリートとラグジュアリーをつなぐ。Demnaがバレンシアガを再定義。メタバースファッションが始動。",
+    designers:["Virgil Abloh","Demna Gvasalia","Alessandro Michele","Daniel Lee","Pierpaolo Piccioli"],
+    detail:"2010年代以降、ファッション業界は根本的な変革期を迎えた。Virgil Ablohは2018年にLouis Vuittonのメンズ・アーティスティックディレクターに就任し、ストリートウェアとハイファッションの境界を消滅させた。Demna GvasaliaはVetementsで既存のファッションシステムを皮肉り、Balenciagaではダッドスニーカーやオーバーサイズシルエットで新たなラグジュアリーを定義。Alessandro MicheleはGucciでマキシマリズムとジェンダーフルイドな美学を展開。サステナビリティが業界の最重要課題となり、Stella McCartneyのようなブランドがリーダーシップを発揮。NFTやメタバースでのデジタルファッションも新たなフロンティアとして注目を集めている。"
+  }
+];
+
+const BRANDS = [
+  {
+    id:"chanel",name:"Chanel",year:1910,founder:"Gabrielle 'Coco' Chanel",country:"France",
+    iconic:["ツイードスーツ","リトルブラックドレス","No.5香水","2.55バッグ","カメリア"],
+    philosophy:"「贅沢の反対は貧しさではなく下品さ」。シンプルさ、快適さ、機能美を追求。女性をコルセットから解放し、モダンウーマンの装いを確立。",
+    collections:["1926 リトルブラックドレス","1955 2.55ハンドバッグ","Karl Lagerfeld時代 (1983-2019)"],
+    impact:"20世紀ファッションの最も重要なブランドの一つ。女性の装いを根本的に変え、ファッション、香水、ジュエリー、コスメを統合した最初のメゾン。"
+  },
+  {
+    id:"dior",name:"Dior",year:1946,founder:"Christian Dior",country:"France",
+    iconic:["ニュールック","バーのスーツ","レディ・ディオール","J'adore","サドルバッグ"],
+    philosophy:"「女性を幸せにすること、それが私の仕事」。女性らしいエレガンスの極致を追求し、夢と美の世界を創造する。",
+    collections:["1947 Corolle (ニュールック)","1949 Trompe-l'oeil","2015 Raf Simons最終コレクション","Maria Grazia Chiuriフェミニズム路線"],
+    impact:"戦後ファッションを一変させ、パリのオートクチュールの地位を復活させた。ニュールックは20世紀で最も影響力のあるファッションの瞬間の一つ。"
+  },
+  {
+    id:"lv",name:"Louis Vuitton",year:1854,founder:"Louis Vuitton",country:"France",
+    iconic:["モノグラムキャンバス","スピーディ","ノエ","トランク","ダミエ"],
+    philosophy:"「旅」を原点とする。革新的な素材と機能性で旅行鞄から始まり、世界最大のラグジュアリーブランドに成長。",
+    collections:["Marc Jacobs時代 (1997-2014)","2017 Supreme x LV","Virgil Abloh メンズ (2018-2021)","Pharrell Williams メンズ (2023-)"],
+    impact:"LVMHグループの旗艦ブランド。ラグジュアリーとストリートカルチャーの融合を推進し、世界で最も価値あるファッションブランドの地位を確立。"
+  },
+  {
+    id:"hermes",name:"Hermes",year:1837,founder:"Thierry Hermes",country:"France",
+    iconic:["バーキン","ケリー","カレ(スカーフ)","コンスタンス","エヴリン"],
+    philosophy:"最高品質の職人技を守り続ける。馬具工房から始まり、革製品の最高峰として、時間をかけた手仕事と希少な素材にこだわる。",
+    collections:["1935 サック・ア・クロア (後のケリー)","1984 バーキン誕生","Jean Paul Gaultier RTW (2003-2010)"],
+    impact:"「静かなるラグジュアリー」の最高峰。大量生産を拒否し、待ち時間のある製品として希少性を維持。家族経営を守り続ける稀有なメゾン。"
+  },
+  {
+    id:"gucci",name:"Gucci",year:1921,founder:"Guccio Gucci",country:"Italy",
+    iconic:["GGモノグラム","バンブーバッグ","ホースビットローファー","フローラ","ダイオニソス"],
+    philosophy:"イタリアの職人技とエクレクティックな美学。Tom Fordのセクシーな再定義からAlessandro Micheleのマキシマリズムまで、常に変化し続ける。",
+    collections:["Tom Ford 1996 FW","Frida Giannini ボヘミアン","Alessandro Michele 2015 デビュー","Sabato De Sarno 新章 (2023-)"],
+    impact:"何度もの劇的な変身を遂げたブランド。Tom Fordの90年代の復活はファッション史上最大のターンアラウンドの一つ。"
+  },
+  {
+    id:"prada",name:"Prada",year:1913,founder:"Mario Prada",country:"Italy",
+    iconic:["ナイロンバッグ","リネアロッサ","Saffiano レザー","Re-Nylon"],
+    philosophy:"「知的な不良」。ファッションを知的な行為として捉え、美の既成概念に挑戦。醜さの中に美を見出す。",
+    collections:["1985 ブラックナイロンバッグ","2012 Great Gatsby衣装","Raf Simons共同クリエイティブ (2020-)"],
+    impact:"Miuccia Pradaはファッション界で最も知的なデザイナーの一人。「ugly chic」の概念を確立し、ファッションの知性化に貢献。"
+  },
+  {
+    id:"balenciaga",name:"Balenciaga",year:1919,founder:"Cristobal Balenciaga",country:"France",
+    iconic:["サックドレス","バルーンスカート","トリプルS","アワーグラス","シティバッグ"],
+    philosophy:"創業者Balenciagaは建築的なシルエットと革新的なカッティングを追求。現在はDemnaがストリートとラグジュアリーの新定義を提示。",
+    collections:["1951 バルーンスカート","Nicolas Ghesquiere時代 (1997-2012)","Demna トリプルS (2017)","2022 Mud Show"],
+    impact:"Cristobal Balenciagaは「クチュリエの中のクチュリエ」。Demna時代にはファッションの文化的議論を最も活発に引き起こすブランドに。"
+  },
+  {
+    id:"ysl",name:"Saint Laurent",year:1961,founder:"Yves Saint Laurent",country:"France",
+    iconic:["ルスモーキング","モンドリアンドレス","サファリジャケット","トレンチ"],
+    philosophy:"プレタポルテの革命者。女性にメンズウェアの力強さを、ファッションにアートを持ち込んだ。",
+    collections:["1966 ルスモーキング","1965 モンドリアンドレス","Hedi Slimane Saint Laurent (2012-2016)","Anthony Vaccarello (2016-)"],
+    impact:"女性のためのパンツスーツを正当化し、プレタポルテの概念を確立。ファッションの民主化に最も貢献したデザイナーの一人。"
+  },
+  {
+    id:"valentino",name:"Valentino",year:1960,founder:"Valentino Garavani",country:"Italy",
+    iconic:["ヴァレンティノレッド","ロックスタッズ","Vロゴ","レースドレス"],
+    philosophy:"ローマの美学、イタリアンエレガンスの極致。赤を象徴色とし、華やかさと洗練を融合。",
+    collections:["Valentino Red ドレスの伝統","Pierpaolo Piccioli 2016-2023","2022 Pink PP コレクション"],
+    impact:"「ヴァレンティノレッド」はファッション史上最も有名な色の一つ。Piccioliは現代クチュールを最も感動的に表現したデザイナー。"
+  },
+  {
+    id:"versace",name:"Versace",year:1978,founder:"Gianni Versace",country:"Italy",
+    iconic:["メドゥーサ","セーフティピンドレス","ジャングルプリント","バロック柄"],
+    philosophy:"「セクシーさは知性を排除しない」。大胆な色使い、プリント、セクシーなカッティングで、自信に満ちた女性像を表現。",
+    collections:["1991 スーパーモデルのショー","1994 セーフティピンドレス","2000 ジャングルドレス (Jennifer Lopez)","2019 JLoジャングルドレス再演"],
+    impact:"スーパーモデルブームの仕掛け人。ファッションとセレブリティ文化を結びつけ、ファッションショーをエンターテイメントに変えた。"
+  },
+  {
+    id:"givenchy",name:"Givenchy",year:1952,founder:"Hubert de Givenchy",country:"France",
+    iconic:["ベティーナブラウス","オードリーのLBD","アンティゴナ","ナイチンゲール"],
+    philosophy:"「ベルエレガンス（美しい優雅さ）」。パリのエレガンスとモダニティを融合。",
+    collections:["1961 ティファニーで朝食を衣装","Alexander McQueen時代 (1996-2001)","Riccardo Tisci ダークロマンティック (2005-2017)"],
+    impact:"オードリー・ヘプバーンとの40年のパートナーシップは映画とファッションの最も美しい関係。McQueenの起用で大胆な方向転換の先駆。"
+  },
+  {
+    id:"mcqueen",name:"Alexander McQueen",year:1992,founder:"Lee Alexander McQueen",country:"UK",
+    iconic:["スカルスカーフ","アルマジロシューズ","ナックルクラッチ","テイルコート"],
+    philosophy:"「ファッションは自己防衛であり、サバイバルの手段」。ダークロマンティシズム、自然と人間の関係、挑発的な美。",
+    collections:["1995 Highland Rape","1999 No.13 (ロボットスプレー)","2010 Plato's Atlantis","Sarah Burton時代 (2010-2023)"],
+    impact:"90-00年代で最も才能あるデザイナーの一人。テクニカルな技術と感情的なストーリーテリングを融合し、ファッションショーを芸術に昇華。"
+  },
+  {
+    id:"cdg",name:"Comme des Garcons",year:1969,founder:"川久保玲 (Rei Kawakubo)",country:"Japan",
+    iconic:["プレイハート","ブラックの美学","非対称カッティング","パッチワーク"],
+    philosophy:"「美しいものではなく、強いものを作りたい」。西洋の美の基準に挑戦し、身体と服の関係を根本的に問い直す。",
+    collections:["1981 パリデビュー「黒の衝撃」","1997 Lumps and Bumps","2017 MET展覧会「Art of the In-Between」"],
+    impact:"西洋ファッションの美の概念を根本から揺さぶった。Dover Street Marketの創設など、ファッションの小売りも革新。"
+  },
+  {
+    id:"issey",name:"Issey Miyake",year:1970,founder:"三宅一生 (Issey Miyake)",country:"Japan",
+    iconic:["プリーツプリーズ","BAO BAO","A-POC","一枚の布"],
+    philosophy:"「一枚の布」の哲学。テクノロジーと伝統の融合、身体と布の関係を探求。プリーツ加工で革命を起こした。",
+    collections:["1988 プリーツプリーズ発表","1993 パリ万博インスタレーション","Steve Jobsの黒タートル"],
+    impact:"ファッションとテクノロジーの融合の先駆者。プリーツプリーズは「着る人の身体で完成する服」という新しい概念を確立。"
+  },
+  {
+    id:"yohji",name:"Yohji Yamamoto",year:1972,founder:"山本耀司 (Yohji Yamamoto)",country:"Japan",
+    iconic:["黒の詩学","非対称ドレープ","Y-3","ロングコート"],
+    philosophy:"「黒は怠惰で安易な色？ 違う。黒は謙虚で傲慢なのだ」。反モード、反トレンド。黒を通じて服の本質を追求。",
+    collections:["1981 パリデビュー","1998 ウェディングドレスコレクション","Y-3 (adidas) コラボレーション"],
+    impact:"川久保玲とともに「黒の衝撃」で西洋ファッションに革命。ダークロマンティシズムとデコンストラクションの源流。"
+  },
+  {
+    id:"westwood",name:"Vivienne Westwood",year:1971,founder:"Vivienne Westwood",country:"UK",
+    iconic:["パンクファッション","オーブロゴ","タータン","ロッキンホース"],
+    philosophy:"パンクの母。反体制、歴史の再解釈、環境活動主義。ファッションを社会的・政治的表現の手段として使用。",
+    collections:["1976 SEX (キングスロード)","1981 Pirates","1990s アングロマニア","環境活動家としての後期作品"],
+    impact:"パンクファッションの創始者。ファッションを通じた社会活動の先駆者として、政治とファッションを結びつけた。"
+  },
+  {
+    id:"burberry",name:"Burberry",year:1856,founder:"Thomas Burberry",country:"UK",
+    iconic:["トレンチコート","バーバリーチェック","ギャバジン","TBモノグラム"],
+    philosophy:"「プロテクト」の精神から始まった英国のヘリテージブランド。機能性と上品さの融合。",
+    collections:["1914 トレンチコート軍用採用","Christopher Bailey デジタル革新","Riccardo Tisci (2018-2023)","Daniel Lee (2023-)"],
+    impact:"トレンチコートをファッションアイコンに昇華。デジタルファッションショーの先駆者。英国ファッションの象徴。"
+  },
+  {
+    id:"fendi",name:"Fendi",year:1925,founder:"Adele & Edoardo Fendi",country:"Italy",
+    iconic:["バゲット","ピーカブー","FFロゴ","ファーの革新"],
+    philosophy:"ローマの職人技とイノベーション。Karl Lagerfeldが54年間クリエイティブディレクターを務めた唯一のブランド。",
+    collections:["Karl Lagerfeld ファー革命","1997 バゲットバッグ","Kim Jones (2021-)","2022 25周年バゲット"],
+    impact:"Lagerfeldの最長在任メゾン。バゲットバッグは「最初のIT バッグ」として社会現象に（Sex and the City）。"
+  },
+  {
+    id:"bottega",name:"Bottega Veneta",year:1966,founder:"Michele Taddei & Renzo Zengiaro",country:"Italy",
+    iconic:["イントレチャート","ポーチ","ジョディ","カセットバッグ"],
+    philosophy:"「あなたのイニシャルだけで十分」。ロゴに頼らず、素材と職人技で語る静かなるラグジュアリー。",
+    collections:["Tomas Maier ミニマリズム (2001-2018)","Daniel Lee 新時代 (2018-2021)","Matthieu Blazy (2021-)"],
+    impact:"Daniel Leeが「静かなるラグジュアリー」のムーブメントを先導。ロゴ疲れの時代に職人技の価値を再認識させた。"
+  },
+  {
+    id:"offwhite",name:"Off-White",year:2012,founder:"Virgil Abloh",country:"USA",
+    iconic:["ダイアゴナルストライプ","引用符デザイン","インダストリアルベルト","ZIP TIEタグ"],
+    philosophy:"「3%のアプローチ」- 既存のものを3%だけ変えて新しいものを作る。ストリートとラグジュアリーの間の灰色地帯を探求。",
+    collections:["2014 デビュー","Nike x Off-White 'The Ten'","2018 LV メンズ就任","2021 Virgil最後のコレクション"],
+    impact:"ストリートウェアをハイファッションの文脈に持ち込んだ最も影響力あるブランド。Virgil Ablohは新世代のクリエイティブの象徴。"
+  }
+];
+
+const COLLECTIONS = [
+  {year:1947,name:"Corolle (ニュールック)",designer:"Christian Dior",brand:"Dior",
+   desc:"戦後のパリで発表された革命的なシルエット。なだらかな肩、蜂のように細いウエスト、花のように広がるスカート。",
+   impact:"「ニュールック」の名でファッション史を変えた。戦時中の質素な装いから、女性らしさの復権を象徴する歴史的転換点。"},
+  {year:1955,name:"2.55ハンドバッグ",designer:"Coco Chanel",brand:"Chanel",
+   desc:"1955年2月に発表された、チェーンストラップ付きのキルティングバッグ。女性の両手を自由にした革命的デザイン。",
+   impact:"ハンドバッグの歴史を変えた不朽の名作。ダイヤモンドキルティングとチェーンストラップはファッションの象徴に。"},
+  {year:1961,name:"ティファニーで朝食を 衣装",designer:"Hubert de Givenchy",brand:"Givenchy",
+   desc:"オードリー・ヘプバーンが着用した黒のサテンドレス。パールネックレスとティアラを合わせた映画史上最も有名な衣装。",
+   impact:"映画とファッションの最も完璧な融合。LBDを永遠のエレガンスの象徴として確立。"},
+  {year:1965,name:"モンドリアンドレス",designer:"Yves Saint Laurent",brand:"Saint Laurent",
+   desc:"ピエト・モンドリアンの絵画をそのままドレスに。赤、青、黄色の幾何学的ブロックが特徴。",
+   impact:"ファッションとアートの融合の最も成功した例。ポップアートの精神をオートクチュールに持ち込んだ。"},
+  {year:1966,name:"ルスモーキング",designer:"Yves Saint Laurent",brand:"Saint Laurent",
+   desc:"女性のための初のタキシードスーツ。ブラックウールのジャケット、サテンのラペル、スリムなパンツ。",
+   impact:"女性がパンツスーツを着る権利を正当化。ジェンダーレスファッションの起源。"},
+  {year:1981,name:"パリデビュー「黒の衝撃」",designer:"川久保玲 / 山本耀司",brand:"Comme des Garcons / Yohji Yamamoto",
+   desc:"穴の開いた黒い服、非対称のシルエット、未完成に見えるデザイン。西洋の「美」の概念を根底から覆した。",
+   impact:"「ヒロシマ・シック」と賛否両論を巻き起こし、西洋ファッションのパラダイムを永遠に変えた。"},
+  {year:1994,name:"セーフティピンドレス",designer:"Gianni Versace",brand:"Versace",
+   desc:"エリザベス・ハーレーがプレミアで着用。金のセーフティピンで繋がれた黒のドレス。",
+   impact:"セレブリティとファッションの関係を決定づけた瞬間。レッドカーペットファッションの概念を確立。"},
+  {year:1996,name:"Tom Ford Gucci FW96",designer:"Tom Ford",brand:"Gucci",
+   desc:"ベルベット、サテン、セクシーなカッティング。Gucciを「最もセクシーなブランド」に変貌させたコレクション。",
+   impact:"ファッション史上最大のブランド再生劇。破産寸前のGucciを世界で最もホットなブランドに変えた。"},
+  {year:1997,name:"Lumps and Bumps (Body Meets Dress)",designer:"川久保玲",brand:"Comme des Garcons",
+   desc:"パッド入りのドレスが身体の輪郭を変形させる。背中、肩、腰に不自然なこぶを作り出す。",
+   impact:"身体の美の基準を完全に破壊。ファッションが身体そのものの概念に問いかけた最も急進的な瞬間。"},
+  {year:1999,name:"No.13",designer:"Alexander McQueen",brand:"Alexander McQueen",
+   desc:"フィナーレでShalom Harlowが回転する台に立ち、2台のロボットアームがドレスにスプレーペイントを施す。",
+   impact:"ファッションショーをパフォーマンスアートに昇華。テクノロジーとクラフトの融合の先駆的表現。"},
+  {year:2000,name:"ジャングルドレス",designer:"Donatella Versace",brand:"Versace",
+   desc:"Jennifer Lopezがグラミー賞で着用した、深いVネックのジャングルプリントドレス。",
+   impact:"Google画像検索が誕生したきっかけ。ファッションがデジタル時代に入った象徴的瞬間。"},
+  {year:2010,name:"Plato's Atlantis",designer:"Alexander McQueen",brand:"Alexander McQueen",
+   desc:"デジタルプリント、爬虫類をモチーフにしたアルマジロシューズ。進化と環境破壊をテーマにした遺作的コレクション。",
+   impact:"初のライブストリーミングされたファッションショー。デジタルファッションの幕開けを告げた。"},
+  {year:2015,name:"Alessandro Michele Gucci デビュー",designer:"Alessandro Michele",brand:"Gucci",
+   desc:"わずか5日で準備されたコレクション。花柄、レトロ、ジェンダーフルイド、マキシマリズム。",
+   impact:"ミニマリズムの時代を終わらせ、「もっと多く、もっとカラフルに」のトレンドを生み出した。"},
+  {year:2017,name:"Nike x Off-White 'The Ten'",designer:"Virgil Abloh",brand:"Off-White / Nike",
+   desc:"Nikeの名作10足をVirgilが再解釈。インダストリアルなタグ、手書き風テキスト、解体的デザイン。",
+   impact:"スニーカーカルチャーとハイファッションの決定的融合。コラボレーション文化の頂点。"},
+  {year:2022,name:"Pink PP コレクション",designer:"Pierpaolo Piccioli",brand:"Valentino",
+   desc:"全てのルックをValentino Pink PPの一色で統一。圧倒的なモノクロームの美学。",
+   impact:"ソーシャルメディア時代のオートクチュールの可能性を証明。色の力を再発見させた。"},
+  {year:2022,name:"Mud Show (FW23)",designer:"Demna",brand:"Balenciaga",
+   desc:"泥の中を歩くモデル、嵐の風の中でのフィナーレ。気候変動とファッションへの問いかけ。",
+   impact:"ファッションショーの概念を再定義。社会的メッセージとスペクタクルの融合。"}
+];
+
+const GLOSSARY = [
+  {term:"オートクチュール",en:"Haute Couture",def:"パリのシャンブル・サンディカルに認定された高級仕立て。手作業で一点ものの衣服を制作。認定基準はアトリエの規模、手縫いの割合、年2回のコレクション発表など。"},
+  {term:"プレタポルテ",en:"Pret-a-Porter",def:"「すぐに着られる服」の意味。既製服。1960年代にYSLらが高級ブランドのプレタポルテラインを開始し、ファッションの民主化を促進。"},
+  {term:"アヴァンギャルド",en:"Avant-Garde",def:"前衛的なファッション。既存の美の概念に挑戦する実験的なデザイン。川久保玲、Martin Margielaらが代表的。"},
+  {term:"メゾン",en:"Maison",def:"フランス語で「家」。ファッションハウス（ブランドの本拠地・組織）を指す。メゾン・ド・クチュールは高級仕立て店。"},
+  {term:"アトリエ",en:"Atelier",def:"デザイナーの工房。オートクチュールメゾンではflou（ドレス部門）とtailleur（仕立て部門）に分かれる。"},
+  {term:"シルエット",en:"Silhouette",def:"服の全体的な輪郭・形状。Aライン、Hライン、Xラインなど、各時代のファッションを特徴づける基本的な形。"},
+  {term:"ビスポーク",en:"Bespoke",def:"英国の注文仕立て。サヴィル・ロウの伝統的なテーラリングに由来。顧客の体型に合わせて一から型紙を起こす。"},
+  {term:"クチュリエ / クチュリエール",en:"Couturier / Couturiere",def:"高級仕立て師。男性形がクチュリエ、女性形がクチュリエール。オートクチュールのデザイナーを指す敬称。"},
+  {term:"コレクション",en:"Collection",def:"デザイナーが一つのテーマやコンセプトのもとに発表する一連の作品群。通常SS（春夏）とFW（秋冬）の年2回。"},
+  {term:"ランウェイ",en:"Runway",def:"ファッションショーでモデルが歩く舞台。キャットウォークとも。パリ、ミラノ、ニューヨーク、ロンドンの四大ファッションウィークで開催。"},
+  {term:"ルック",en:"Look",def:"一つのコーディネート全体を指す。ファッションショーでは各モデルの装いを「ルック1」「ルック2」と番号で管理。"},
+  {term:"テキスタイル",en:"Textile",def:"織物・生地全般。ファッションの基礎素材。シルク、ウール、コットン、リネンなどの天然繊維からナイロン、ポリエステルの合成繊維まで。"},
+  {term:"ドレーピング",en:"Draping",def:"マネキンに直接布を当てながら立体的に服を設計する技法。Madeleine Vionnetが確立。バイアスカットとの組み合わせで有名。"},
+  {term:"バイアスカット",en:"Bias Cut",def:"生地を斜め45度に裁断する技法。布が体に沿って流れるような動きを生み出す。1920年代にVionnetが完成させた。"},
+  {term:"パトロン（型紙）",en:"Pattern",def:"服を作るための型紙。平面のパターンメイキングとドレーピングによる立体裁断の2つの方法がある。"},
+  {term:"トワル",en:"Toile",def:"最終的な生地で縫製する前に、安価なモスリン布で作る試作品。フィッティングで形を確認・修正するために使用。"},
+  {term:"デコンストラクション",en:"Deconstruction",def:"既存の服の構造を解体・再構築する手法。Martin Margielaが代表格。裏地を表に出す、縫い目を見せるなどの技法。"},
+  {term:"ファストファッション",en:"Fast Fashion",def:"最新トレンドを低価格で素早く大量生産するビジネスモデル。ZARA、H&M、UNIQLOなど。環境問題や労働問題が課題。"},
+  {term:"サステナブルファッション",en:"Sustainable Fashion",def:"環境・社会に配慮したファッション。オーガニック素材、フェアトレード、リサイクル、アップサイクルなど持続可能な取り組み。"},
+  {term:"メタバースファッション",en:"Metaverse Fashion",def:"バーチャル空間でのファッション。NFTとしてのデジタルウェア、アバター用の衣装など。Balenciaga x Fortniteなどのコラボも。"},
+  {term:"カプセルコレクション",en:"Capsule Collection",def:"通常のコレクションとは別に発表される限定的な小規模コレクション。コラボレーションや特定テーマで展開されることが多い。"},
+  {term:"クルーズコレクション",en:"Cruise/Resort Collection",def:"SS/FWの間に発表されるシーズン中間のコレクション。元々はリゾート地への旅行用の服として誕生。"},
+  {term:"ルックブック",en:"Lookbook",def:"コレクションのスタイリングを写真にまとめたカタログ。バイヤーやプレス向けに作成される。現在はデジタル配信が主流。"},
+  {term:"IT バッグ",en:"IT Bag",def:"社会現象になるほど人気を博したハンドバッグ。Fendi バゲット、Chloe パディントンなど。2000年代に特に顕著。"},
+  {term:"ストリートウェア",en:"Streetwear",def:"ストリートカルチャーから生まれたファッション。Supreme、Stussy、A BATHING APEなど。2010年代にラグジュアリーとの融合が加速。"}
+];
+
+const CONNECTIONS = [
+  {
+    title:"オートクチュールの系譜",
+    flow:["Charles Worth","Jacques Doucet","Paul Poiret","Coco Chanel","Christian Dior","Yves Saint Laurent"],
+    desc:"Worthが確立したオートクチュールの伝統は、Poiretのコルセット解放、Chanelのモダニズム、Diorのニュールック、YSLのプレタポルテ革命と進化し続けた。"
+  },
+  {
+    title:"日本デザイナーの衝撃",
+    flow:["三宅一生","川久保玲","山本耀司","渡辺淳弥","高橋盾"],
+    desc:"三宅が道を開き、川久保と山本が1981年の「黒の衝撃」で西洋を揺さぶった。弟子の渡辺淳弥（CdG）や高橋盾（Undercover）が次世代を牽引。"
+  },
+  {
+    title:"Balenciaga学派",
+    flow:["Cristobal Balenciaga","Andre Courreges","Emanuel Ungaro","Hubert de Givenchy","Oscar de la Renta"],
+    desc:"Balenciagaのアトリエからは多くの偉大なデザイナーが巣立った。Courregesは宇宙時代のファッションを、Givenchyは優美なエレガンスを追求した。"
+  },
+  {
+    title:"パンクからストリートへ",
+    flow:["Vivienne Westwood","Jean Paul Gaultier","Martin Margiela","Raf Simons","Virgil Abloh","Demna"],
+    desc:"Westwoodのパンクの反骨精神は、Gaultierのストリート引用、Margielaの解体、Raf Simonsのユースカルチャー、Ablohのストリートラグジュアリーへと発展。"
+  },
+  {
+    title:"アントワープの反乱",
+    flow:["アントワープ王立美術アカデミー","Martin Margiela","Ann Demeulemeester","Dries Van Noten","Raf Simons"],
+    desc:"1980年代、ベルギーのアントワープからアントワープ・シックスが登場。Margielaの解体主義、Demeulemeesterの詩的な闇、Van Notenのプリントの魔術が世界を変えた。"
+  },
+  {
+    title:"ミニマリズムの流れ",
+    flow:["Jil Sander","Helmut Lang","Phoebe Philo (Celine)","Daniel Lee (Bottega)","The Row"],
+    desc:"Jil Sanderが確立した知的ミニマリズムは、Helmut Langの90年代を経て、PhiloのCeline、LeeのBottega Venetaへと受け継がれた。"
+  },
+  {
+    title:"Gucci帝国の変遷",
+    flow:["Guccio Gucci","Tom Ford","Frida Giannini","Alessandro Michele","Sabato De Sarno"],
+    desc:"創業者Guccio Gucciから、Tom Fordの劇的な再生、Micheleのマキシマリズム革命まで、Gucciは常に変身し続けるブランド。"
+  },
+  {
+    title:"ストリート x ラグジュアリー",
+    flow:["Shawn Stussy","NIGO (A BATHING APE)","Kanye West (Yeezy)","Virgil Abloh (Off-White)","Pharrell (LV)"],
+    desc:"ストリートウェアの文化がラグジュアリーファッションを浸食。Stussyから始まり、日本のストリートを経て、AblohやPharrellがLVのクリエイティブディレクターに就任するまでに。"
+  }
+];
+
+/* ================================================================
+   STATE
+   ================================================================ */
+let bookmarks = JSON.parse(localStorage.getItem('fashion_bookmarks')||'[]');
+let quizScore = parseInt(localStorage.getItem('fashion_quiz_score')||'0');
+let quizTotal = parseInt(localStorage.getItem('fashion_quiz_total')||'0');
+let currentQuizCat = 'brand-founder';
+let currentQuizQ = null;
+
+/* ================================================================
+   NAVIGATION
+   ================================================================ */
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    const sec = document.getElementById('sec-'+btn.dataset.section);
+    sec.classList.add('active');
+    // Re-render bookmarks when navigating to that section
+    if(btn.dataset.section==='bookmarks') renderBookmarks();
+    // Scroll to top when switching sections
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+/* Keyboard support */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    closeBrandModal();
+  }
+});
+
+/* Back to top button */
+const backToTopBtn = document.getElementById('backToTop');
+window.addEventListener('scroll',()=>{
+  backToTopBtn.classList.toggle('show', window.scrollY > 300);
+},{passive:true});
+backToTopBtn.addEventListener('click',()=>{
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+/* ================================================================
+   TIMELINE
+   ================================================================ */
+function renderTimeline(){
+  const track=document.getElementById('timelineTrack');
+  track.innerHTML=ERAS.map(e=>`
+    <div class="era-card" data-id="${e.id}" onclick="toggleEra(this)">
+      <div class="era-years">${e.period}</div>
+      <div class="era-title">${e.title}</div>
+      <div class="era-desc">${e.desc}</div>
+      <div class="era-designers">${e.designers.map(d=>`<span class="era-tag">${d}</span>`).join('')}</div>
+      <div class="era-expand-hint">タップして詳細を表示</div>
+      <div class="era-detail">${e.detail}</div>
+    </div>
+  `).join('');
+}
+function toggleEra(el){el.classList.toggle('expanded')}
+
+/* ================================================================
+   BRANDS
+   ================================================================ */
+function renderBrands(){
+  const grid=document.getElementById('brandGrid');
+  let list=[...BRANDS];
+  const sort=document.getElementById('brandSort').value;
+  const country=document.getElementById('brandCountry').value;
+  const search=document.getElementById('brandSearch').value.toLowerCase().trim();
+
+  if(country!=='all') list=list.filter(b=>b.country===country);
+  if(search){
+    list=list.filter(b=>
+      b.name.toLowerCase().includes(search)||
+      b.founder.toLowerCase().includes(search)||
+      b.iconic.some(i=>i.toLowerCase().includes(search))
+    );
+  }
+  if(sort==='alpha') list.sort((a,b)=>a.name.localeCompare(b.name));
+  else if(sort==='year') list.sort((a,b)=>a.year-b.year);
+  else if(sort==='country') list.sort((a,b)=>a.country.localeCompare(b.country));
+
+  document.getElementById('brandCount').innerHTML=`<strong>${list.length}</strong>ブランド`;
+
+  grid.innerHTML=list.length ? list.map(b=>{
+    const flag = b.country==='France'?'\u{1F1EB}\u{1F1F7}':b.country==='Italy'?'\u{1F1EE}\u{1F1F9}':b.country==='UK'?'\u{1F1EC}\u{1F1E7}':b.country==='Japan'?'\u{1F1EF}\u{1F1F5}':'\u{1F1FA}\u{1F1F8}';
+    return `
+    <div class="brand-card" data-brand-id="${b.id}">
+      <div class="brand-name">${b.name}</div>
+      <div class="brand-year">${b.year}</div>
+      <div class="brand-founder">${b.founder}</div>
+      <div class="brand-country">${flag} ${b.country}</div>
+    </div>`;
+  }).join('') : '<div class="empty-state">該当するブランドがありません</div>';
+}
+
+/* Event delegation for brand cards */
+document.getElementById('brandGrid').addEventListener('click',e=>{
+  const card = e.target.closest('.brand-card');
+  if(card) openBrand(card.dataset.brandId);
+});
+
+document.getElementById('brandSort').addEventListener('change',renderBrands);
+document.getElementById('brandCountry').addEventListener('change',renderBrands);
+document.getElementById('brandSearch').addEventListener('input',renderBrands);
+
+function openBrand(id){
+  const b=BRANDS.find(x=>x.id===id);if(!b)return;
+  const bm=bookmarks.find(x=>x.type==='brand'&&x.id===id);
+  const modal=document.getElementById('brandModal');
+  const content=document.getElementById('brandModalContent');
+  content.innerHTML=`
+    <button class="modal-close" onclick="closeBrandModal()">&times;</button>
+    <div class="modal-brand-name">${b.name}</div>
+    <div class="modal-brand-sub">${b.year} | ${b.founder} | ${b.country}</div>
+    <div class="modal-section">
+      <h4>アイコニックアイテム</h4>
+      <div>${b.iconic.map(i=>`<span class="modal-tag">${i}</span>`).join('')}</div>
+    </div>
+    <div class="modal-section">
+      <h4>デザイン哲学</h4>
+      <p>${b.philosophy}</p>
+    </div>
+    <div class="modal-section">
+      <h4>代表的コレクション</h4>
+      <ul>${b.collections.map(c=>`<li>${c}</li>`).join('')}</ul>
+    </div>
+    <div class="modal-section">
+      <h4>文化的影響</h4>
+      <p>${b.impact}</p>
+    </div>
+    <button class="bookmark-btn ${bm?'active':''}" data-bookmark-brand="${b.id}" data-bookmark-name="${b.name}">
+      ${bm?'&#9733; ブックマーク済み':'&#9734; ブックマークに追加'}
+    </button>
+  `;
+  /* Bookmark button via event delegation */
+  content.querySelector('.bookmark-btn').addEventListener('click',function(){
+    toggleBookmark('brand',this.dataset.bookmarkBrand,this.dataset.bookmarkName,this);
+  });
+  modal.classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeBrandModal(){
+  document.getElementById('brandModal').classList.remove('show');
+  document.body.style.overflow='';
+}
+document.getElementById('brandModal').addEventListener('click',e=>{
+  if(e.target.classList.contains('modal-overlay'))closeBrandModal();
+});
+
+/* ================================================================
+   COLLECTIONS
+   ================================================================ */
+function renderCollections(){
+  const list=document.getElementById('collectionList');
+  const era=document.getElementById('collectionEra').value;
+  let filtered=[...COLLECTIONS];
+  if(era!=='all'){
+    const decade=parseInt(era);
+    filtered=filtered.filter(c=>c.year>=decade&&c.year<decade+10);
+  }
+  filtered.sort((a,b)=>a.year-b.year);
+
+  document.getElementById('collectionCount').innerHTML=`<strong>${filtered.length}</strong>コレクション`;
+
+  list.innerHTML=filtered.length?filtered.map(c=>`
+    <div class="collection-card">
+      <div class="collection-header">
+        <div class="collection-name">${c.name}</div>
+        <div class="collection-year">${c.year}</div>
+      </div>
+      <div class="collection-designer">${c.designer} — ${c.brand}</div>
+      <div class="collection-desc">${c.desc}</div>
+      <div class="collection-impact">${c.impact}</div>
+    </div>
+  `).join(''):'<div class="empty-state"><div class="empty-state-icon">&#128194;</div>この年代のコレクションはありません</div>';
+}
+document.getElementById('collectionEra').addEventListener('change',renderCollections);
+
+/* ================================================================
+   QUIZ
+   ================================================================ */
+const QUIZ_CATS=[
+  {id:'brand-founder',label:'ブランド x 創設者'},
+  {id:'era-style',label:'時代 x スタイル'},
+  {id:'collection-designer',label:'コレクション x デザイナー'},
+  {id:'iconic-brand',label:'アイコン x ブランド'},
+  {id:'glossary',label:'用語クイズ'}
+];
+
+function renderQuizCats(){
+  document.getElementById('quizCats').innerHTML=QUIZ_CATS.map(c=>
+    `<button class="quiz-cat-btn ${c.id===currentQuizCat?'active':''}" data-quiz-cat="${c.id}">${c.label}</button>`
+  ).join('');
+}
+document.getElementById('quizCats').addEventListener('click',e=>{
+  const btn=e.target.closest('.quiz-cat-btn');
+  if(btn) setQuizCat(btn.dataset.quizCat);
+});
+
+function setQuizCat(cat){
+  currentQuizCat=cat;
+  renderQuizCats();
+  generateQuiz();
+}
+
+function generateQuiz(){
+  let q,opts,answer,explanation='';
+  const qEl=document.getElementById('quizQuestion');
+  const oEl=document.getElementById('quizOptions');
+  const nEl=document.getElementById('quizNext');
+  const exEl=document.getElementById('quizExplanation');
+  nEl.classList.remove('show');
+  exEl.classList.remove('show');
+  exEl.textContent='';
+
+  if(currentQuizCat==='brand-founder'){
+    const b=BRANDS[Math.floor(Math.random()*BRANDS.length)];
+    q=`「${b.name}」の創設者は？`;
+    answer=b.founder;
+    explanation=`${b.name}は${b.year}年に${b.founder}が設立。${b.country}のブランド。`;
+    opts=shuffle([b.founder,...getRandomItems(BRANDS.filter(x=>x.id!==b.id).map(x=>x.founder),3)]);
+  } else if(currentQuizCat==='era-style'){
+    const e=ERAS[Math.floor(Math.random()*ERAS.length)];
+    q=`${e.period}の時代は何と呼ばれる？`;
+    answer=e.title;
+    explanation=`${e.period}: ${e.title}（${e.titleEn}）`;
+    opts=shuffle([e.title,...getRandomItems(ERAS.filter(x=>x.id!==e.id).map(x=>x.title),3)]);
+  } else if(currentQuizCat==='collection-designer'){
+    const c=COLLECTIONS[Math.floor(Math.random()*COLLECTIONS.length)];
+    q=`「${c.name}」(${c.year})のデザイナーは？`;
+    answer=c.designer;
+    explanation=`${c.name}は${c.designer}が${c.brand}のために制作。`;
+    const others=COLLECTIONS.filter(x=>x.designer!==c.designer).map(x=>x.designer);
+    opts=shuffle([c.designer,...getRandomItems([...new Set(others)],3)]);
+  } else if(currentQuizCat==='iconic-brand'){
+    const b=BRANDS[Math.floor(Math.random()*BRANDS.length)];
+    const item=b.iconic[Math.floor(Math.random()*b.iconic.length)];
+    q=`「${item}」はどのブランドのアイコン？`;
+    answer=b.name;
+    explanation=`「${item}」は${b.name}を代表するアイコニックアイテム。`;
+    opts=shuffle([b.name,...getRandomItems(BRANDS.filter(x=>x.id!==b.id).map(x=>x.name),3)]);
+  } else {
+    const g=GLOSSARY[Math.floor(Math.random()*GLOSSARY.length)];
+    q=`「${g.term}」の英語名は？`;
+    answer=g.en;
+    explanation=g.def;
+    opts=shuffle([g.en,...getRandomItems(GLOSSARY.filter(x=>x.term!==g.term).map(x=>x.en),3)]);
+  }
+
+  currentQuizQ={answer,explanation};
+  qEl.textContent=q;
+
+  /* Use data attributes instead of inline onclick with string escaping */
+  oEl.innerHTML=opts.map((o,i)=>`<button class="quiz-opt" data-answer-idx="${i}">${o}</button>`).join('');
+  oEl.querySelectorAll('.quiz-opt').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      answerQuiz(this, this.textContent, answer, explanation);
+    });
+  });
+  updateQuizScore();
+}
+
+function answerQuiz(el,selected,answer,explanation){
+  document.querySelectorAll('.quiz-opt').forEach(o=>{
+    o.classList.add('disabled');
+    if(o.textContent===answer) o.classList.add('correct');
+    else if(o===el&&selected!==answer) o.classList.add('wrong');
+  });
+  quizTotal++;
+  if(selected===answer) quizScore++;
+  localStorage.setItem('fashion_quiz_score',quizScore);
+  localStorage.setItem('fashion_quiz_total',quizTotal);
+  updateQuizScore();
+  /* Show explanation */
+  if(explanation){
+    const exEl=document.getElementById('quizExplanation');
+    exEl.textContent=explanation;
+    exEl.classList.add('show');
+  }
+  document.getElementById('quizNext').classList.add('show');
+}
+
+function updateQuizScore(){
+  document.getElementById('quizScoreNum').textContent=quizScore;
+  document.getElementById('quizTotal').textContent=quizTotal;
+  const pctEl=document.getElementById('quizPct');
+  if(quizTotal>0){
+    pctEl.textContent=`正解率 ${Math.round(quizScore/quizTotal*100)}%`;
+  } else {
+    pctEl.textContent='';
+  }
+}
+document.getElementById('quizNext').addEventListener('click',generateQuiz);
+
+/* Quiz score reset */
+document.getElementById('quizReset').addEventListener('click',()=>{
+  quizScore=0;quizTotal=0;
+  localStorage.setItem('fashion_quiz_score','0');
+  localStorage.setItem('fashion_quiz_total','0');
+  updateQuizScore();
+});
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function getRandomItems(arr,n){return shuffle(arr).slice(0,n)}
+
+/* ================================================================
+   GLOSSARY
+   ================================================================ */
+function renderGlossary(filter=''){
+  const list=document.getElementById('glossaryList');
+  let items=GLOSSARY;
+  if(filter){
+    const f=filter.toLowerCase();
+    items=items.filter(g=>g.term.toLowerCase().includes(f)||g.en.toLowerCase().includes(f)||g.def.toLowerCase().includes(f));
+  }
+  document.getElementById('glossaryCount').textContent=`${items.length} 件の用語`;
+  list.innerHTML=items.map(g=>`
+    <div class="glossary-item" onclick="this.classList.toggle('open')">
+      <div class="glossary-term">${g.term}</div>
+      <div class="glossary-term-en">${g.en}</div>
+      <div class="glossary-def">${g.def}</div>
+    </div>
+  `).join('');
+}
+document.getElementById('glossarySearch').addEventListener('input',e=>renderGlossary(e.target.value));
+
+/* ================================================================
+   CONNECTIONS
+   ================================================================ */
+function renderConnections(){
+  const container=document.getElementById('connectionsContainer');
+  container.innerHTML=CONNECTIONS.map(c=>`
+    <div class="connection-group">
+      <div class="connection-title">${c.title}</div>
+      <div class="connection-flow">
+        ${c.flow.map((n,i)=>`<span class="connection-node">${n}</span>${i<c.flow.length-1?'<span class="connection-arrow">\u2192</span>':''}`).join('')}
+      </div>
+      <div class="connection-desc">${c.desc}</div>
+    </div>
+  `).join('');
+}
+
+/* ================================================================
+   BOOKMARKS
+   ================================================================ */
+function toggleBookmark(type,id,name,btnEl){
+  const idx=bookmarks.findIndex(b=>b.type===type&&b.id===id);
+  if(idx>-1){
+    bookmarks.splice(idx,1);
+    if(btnEl){btnEl.classList.remove('active');btnEl.innerHTML='&#9734; ブックマークに追加'}
+  } else {
+    bookmarks.push({type,id,name});
+    if(btnEl){btnEl.classList.add('active');btnEl.innerHTML='&#9733; ブックマーク済み'}
+  }
+  localStorage.setItem('fashion_bookmarks',JSON.stringify(bookmarks));
+}
+
+function renderBookmarks(){
+  const list=document.getElementById('bookmarkList');
+  if(!bookmarks.length){
+    list.innerHTML='<div class="empty-state"><div class="empty-state-icon">&#9734;</div>ブックマークはまだありません<br>ブランド詳細画面から追加できます</div>';
+    return;
+  }
+  list.innerHTML=bookmarks.map((b,i)=>`
+    <div class="bookmark-item" data-bm-type="${b.type}" data-bm-id="${b.id}">
+      <div class="bookmark-info">
+        <div class="bookmark-type">${b.type}</div>
+        <div class="bookmark-name">${b.name}</div>
+      </div>
+      <button class="bookmark-remove" data-bm-idx="${i}">&times;</button>
+    </div>
+  `).join('');
+
+  /* Event delegation for bookmark actions */
+  list.querySelectorAll('.bookmark-item').forEach(item=>{
+    item.addEventListener('click',e=>{
+      if(e.target.closest('.bookmark-remove')) return;
+      const type=item.dataset.bmType;
+      const id=item.dataset.bmId;
+      if(type==='brand') openBrand(id);
+    });
+  });
+  list.querySelectorAll('.bookmark-remove').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      removeBookmark(parseInt(btn.dataset.bmIdx));
+    });
+  });
+}
+function removeBookmark(idx){
+  bookmarks.splice(idx,1);
+  localStorage.setItem('fashion_bookmarks',JSON.stringify(bookmarks));
+  renderBookmarks();
+}
+
+/* ================================================================
+   INIT
+   ================================================================ */
+renderTimeline();
+renderBrands();
+renderCollections();
+renderQuizCats();
+updateQuizScore();
+renderGlossary();
+renderConnections();
+renderBookmarks();
+
+/* Service Worker registration for PWA (inline) */
+if('serviceWorker' in navigator){
+  const swCode=`
+    const CACHE='fashion-v2';
+    self.addEventListener('install',e=>{self.skipWaiting()});
+    self.addEventListener('activate',e=>{
+      e.waitUntil(
+        caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>clients.claim())
+      );
+    });
+    self.addEventListener('fetch',e=>{
+      e.respondWith(
+        caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{
+          if(res.status===200){
+            const clone=res.clone();
+            caches.open(CACHE).then(c=>c.put(e.request,clone));
+          }
+          return res;
+        }).catch(()=>new Response('Offline',{status:503})))
+      );
+    });
+  `;
+  const swBlob=new Blob([swCode],{type:'application/javascript'});
+  const swUrl=URL.createObjectURL(swBlob);
+  navigator.serviceWorker.register(swUrl).catch(()=>{});
+}
+</script>
+</body>
+</html>
